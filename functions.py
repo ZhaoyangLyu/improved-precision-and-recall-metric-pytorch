@@ -40,6 +40,13 @@ class precision_and_recall(object):
         generated_features = generated_features[:data_num]
         real_features = real_features[:data_num]
 
+        # get precision and recall
+        precision = self.manifold_estimate(real_features, generated_features, self.k)
+        recall = self.manifold_estimate(generated_features, real_features, self.k)
+ 
+        print("Precision:", precision)        
+        print("Recall:", recall)
+
         config = tf.ConfigProto(
             allow_soft_placement=True  # allows DecodeJpeg to run on CPU in Inception graph
         )
@@ -50,16 +57,17 @@ class precision_and_recall(object):
         # than after the next print(), to help prevent confusion.
         evaluator.warmup()
 
-        # get precision and recall
-        precision = self.manifold_estimate(real_features, generated_features, self.k)
-        recall = self.manifold_estimate(generated_features, real_features, self.k)
- 
-        print(precision)        
-        print(recall)
+        real_features = [real.cpu().numpy() for real in real_features]
+        generated_features = [generated.cpu().numpy() for generated in generated_features]
+
+        real_features = np.concatenate(real_features, axis=0)
+        generated_features = np.concatenate(generated_features, axis=0)
+
+        prec, recall = evaluator.compute_prec_recall(real_features, generated_features)
+        print("Precision:", prec)
+        print("Recall:", recall)
 
     def manifold_estimate(self, A_features, B_features, k):
-
-        pdb.set_trace()
         
         KNN_list_in_A = {}
         for A in tqdm(A_features, ncols=80):
