@@ -194,6 +194,7 @@ class Evaluator:
     def compute_prec_recall(
         self, activations_ref: np.ndarray, activations_sample: np.ndarray
     ) -> Tuple[float, float]:
+        radii_2 = self.manifold_estimator.manifold_radii(activations_sample)
         radii_1 = self.manifold_estimator.manifold_radii(activations_ref)
         radii_2 = self.manifold_estimator.manifold_radii(activations_sample)
         radii_1 = self.manifold_estimator.manifold_radii(activations_ref)
