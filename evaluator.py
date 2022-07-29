@@ -429,6 +429,8 @@ def _batch_pairwise_distances(U, V):
         # norm_u as a column and norm_v as a row vectors.
         norm_u = tf.reshape(norm_u, [-1, 1])
         norm_v = tf.reshape(norm_v, [1, -1])
+        print('norm_u', norm_u)
+        print('norm_v', norm_v)
 
         # Pairwise squared Euclidean distances.
         D = tf.maximum(norm_u - 2 * tf.matmul(U, V, False, True) + norm_v, 0.0)
