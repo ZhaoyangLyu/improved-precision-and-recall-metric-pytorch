@@ -275,6 +275,7 @@ class ManifoldEstimator:
                 ],
                 axis=0,
             )
+        pdb.set_trace()
 
         if self.clamp_to_percentile is not None:
             max_distances = np.percentile(radii, self.clamp_to_percentile, axis=0)
