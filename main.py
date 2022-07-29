@@ -18,7 +18,7 @@ def parse_args():
     parser.add_argument('--generated_dir', default=G_DIRECTORY)
     parser.add_argument('--real_dir', default=R_DIRECTORY)
 
-    parser.add_argument('--dataset', type = str, default='none', 'could be cifar10, celeba64, celeba128, or none')
+    parser.add_argument('--dataset', type = str, default='none', help='could be cifar10, celeba64, celeba128, or none')
     print(parser.parse_args())
     return check_args(parser.parse_args())
 
