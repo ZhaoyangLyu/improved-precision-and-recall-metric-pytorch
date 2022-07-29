@@ -70,7 +70,7 @@ class precision_and_recall(object):
         # print("Precision:", prec)
         # print("Recall:", recall)
 
-        state = knn_precision_recall_features(real_features, generated_features, num_gpus=num_gpus)
+        state = knn_precision_recall_features(real_features, generated_features, num_gpus=1)
         print('Precision: %0.3f' % state['precision'][0])
         print('Recall: %0.3f' % state['recall'][0])
 
