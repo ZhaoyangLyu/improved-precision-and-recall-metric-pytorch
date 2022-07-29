@@ -272,7 +272,7 @@ class ManifoldEstimator:
                 # ] = self.distance_block.pairwise_distances(row_batch, col_batch)
                 distance_batch[
                     0 : end1 - begin1, begin2:end2
-                ] = pytorch_pairwise_distance(row_batch, col_batch)
+                ] = self.pytorch_pairwise_distance(row_batch, col_batch)
 
             # Find the k-nearest neighbor from the current batch.
             radii[begin1:end1, :] = np.concatenate(
