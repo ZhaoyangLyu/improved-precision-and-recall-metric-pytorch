@@ -17,6 +17,8 @@ import tensorflow.compat.v1 as tf
 from scipy import linalg
 from tqdm.auto import tqdm
 
+import torch
+
 INCEPTION_V3_URL = "https://openaipublic.blob.core.windows.net/diffusion/jul-2021/ref_batches/classify_image_graph_def.pb"
 INCEPTION_V3_PATH = "classify_image_graph_def.pb"
 
@@ -265,9 +267,12 @@ class ManifoldEstimator:
                 col_batch = features[begin2:end2]
 
                 # Compute distances between batches.
+                # distance_batch[
+                #     0 : end1 - begin1, begin2:end2
+                # ] = self.distance_block.pairwise_distances(row_batch, col_batch)
                 distance_batch[
                     0 : end1 - begin1, begin2:end2
-                ] = self.distance_block.pairwise_distances(row_batch, col_batch)
+                ] = pytorch_pairwise_distance(row_batch, col_batch)
 
             # Find the k-nearest neighbor from the current batch.
             radii[begin1:end1, :] = np.concatenate(
@@ -283,6 +288,17 @@ class ManifoldEstimator:
             max_distances = np.percentile(radii, self.clamp_to_percentile, axis=0)
             radii[radii > max_distances] = 0
         return radii
+
+    def pytorch_pairwise_distance(U,V):
+        # U is an numpy array of shape M,D
+        # V is an numpy array of shape N,D
+        with torch.no_grad():
+            U_t = torch.from_numpy(U).unsqueeze(0).cuda() # 1,M,D
+            V_t = torch.from_numpy(V).unsqueeze(0).cuda() # 1,N,D
+            DD = torch.cdist(U_t, V_t, p=2.0) # 1,M,N
+            DD = DD.squeeze(0).cpu().numpy()
+        return DD
+
 
     def evaluate(self, features: np.ndarray, radii: np.ndarray, eval_features: np.ndarray):
         """
