@@ -23,7 +23,7 @@ INCEPTION_V3_PATH = "classify_image_graph_def.pb"
 FID_POOL_NAME = "pool_3:0"
 FID_SPATIAL_NAME = "mixed_6/conv:0"
 
-
+import pdb
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("ref_batch", help="path to reference batch npz file")
@@ -196,6 +196,7 @@ class Evaluator:
     ) -> Tuple[float, float]:
         radii_1 = self.manifold_estimator.manifold_radii(activations_ref)
         radii_2 = self.manifold_estimator.manifold_radii(activations_sample)
+        pdb.set_trace()
         pr = self.manifold_estimator.evaluate_pr(
             activations_ref, radii_1, activations_sample, radii_2
         )
