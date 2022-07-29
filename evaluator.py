@@ -417,6 +417,7 @@ class DistanceBlock:
 
 
 def _batch_pairwise_distances(U, V):
+    pdb.set_trace()
     """
     Compute pairwise distances between two batches of feature vectors.
     """
