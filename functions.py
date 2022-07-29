@@ -7,6 +7,8 @@ import operator
 from dataloader import feature_extractor
 from tqdm import tqdm
 
+import pdb
+
 
 class precision_and_recall(object):
     def __init__(self, args):
@@ -43,6 +45,8 @@ class precision_and_recall(object):
         print(recall)
 
     def manifold_estimate(self, A_features, B_features, k):
+
+        pdb.set_trace()
         
         KNN_list_in_A = {}
         for A in tqdm(A_features, ncols=80):

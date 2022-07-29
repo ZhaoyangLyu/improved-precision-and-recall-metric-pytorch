@@ -17,6 +17,8 @@ def parse_args():
 
     parser.add_argument('--generated_dir', default=G_DIRECTORY)
     parser.add_argument('--real_dir', default=R_DIRECTORY)
+
+    parser.add_argument('--dataset', type = str, default='none', 'could be cifar10, celeba64, celeba128, or none')
     print(parser.parse_args())
     return check_args(parser.parse_args())
 
@@ -37,6 +39,12 @@ def check_args(args):
 def main():
     # parse arguments
     args = parse_args()
+
+    datasets_path = {'cifar10':'datasets/cifar10', 'celeba64':'datasets/celeba/img_align_celeba_64', 'celeba128':'datasets/celeba/img_align_celeba_128'}
+    print('dataset is', args.dataset)
+    if args.dataset in ['cifar10', 'celeba64', 'celeba128']:
+        args.real_dir = datasets_path[args.dataset]
+        print('using ref images from the directory', args.real_dir)
 
     if args.cal_type == 'precision_and_recall':
         task = precision_and_recall(args)
