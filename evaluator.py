@@ -196,6 +196,7 @@ class Evaluator:
     ) -> Tuple[float, float]:
         radii_1 = self.manifold_estimator.manifold_radii(activations_ref)
         radii_2 = self.manifold_estimator.manifold_radii(activations_sample)
+        radii_1 = self.manifold_estimator.manifold_radii(activations_ref)
         pdb.set_trace()
         pr = self.manifold_estimator.evaluate_pr(
             activations_ref, radii_1, activations_sample, radii_2
