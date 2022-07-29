@@ -7,6 +7,9 @@ import operator
 from dataloader import feature_extractor
 from tqdm import tqdm
 
+from evaluator import Evaluator
+import tensorflow.compat.v1 as tf
+
 import pdb
 
 
@@ -36,6 +39,16 @@ class precision_and_recall(object):
             return
         generated_features = generated_features[:data_num]
         real_features = real_features[:data_num]
+
+        config = tf.ConfigProto(
+            allow_soft_placement=True  # allows DecodeJpeg to run on CPU in Inception graph
+        )
+        config.gpu_options.allow_growth = True
+        evaluator = Evaluator(tf.Session(config=config))
+        print("warming up TensorFlow...")
+        # This will cause TF to print a bunch of verbose stuff now rather
+        # than after the next print(), to help prevent confusion.
+        evaluator.warmup()
 
         # get precision and recall
         precision = self.manifold_estimate(real_features, generated_features, self.k)
