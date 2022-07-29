@@ -85,6 +85,7 @@ class feature_extractor(object):
         plt.pause(10) # pause a bit so that plots are updated
 
 import random
+import time
 class ImageDataset(Dataset):
     def __init__(self, dir_path, data_size=100, batch_size=64):
         self.dir_path = dir_path
@@ -94,7 +95,8 @@ class ImageDataset(Dataset):
         self.img_paths = []
 
         files = os.listdir(dir_path)
-        random.shuffle(files)
+        random.seed(time.time())
+        files = random.shuffle(files)
         for i, img_name in enumerate(files):
             if i >= data_size:
                 break
