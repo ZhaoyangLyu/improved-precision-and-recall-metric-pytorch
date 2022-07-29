@@ -99,7 +99,7 @@ class ManifoldEstimator():
 
                 # Compute distances between batches.
                 sess = tf.Session()
-                with tf.session_as_default(sess):
+                with sess.as_default():
                     distance_batch[0:end1-begin1, begin2:end2] = self._distance_block.pairwise_distances(row_batch, col_batch)
                 sess.close()
             # Find the k-nearest neighbor from the current batch.
