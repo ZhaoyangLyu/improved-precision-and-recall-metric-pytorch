@@ -97,7 +97,7 @@ class ImageDataset(Dataset):
 
         files = os.listdir(dir_path)
         pdb.set_trace()
-        random.seed(time.time())
+        random.seed(int(time.time()*100))
         files = random.shuffle(files)
         for i, img_name in enumerate(files):
             if i >= data_size:
