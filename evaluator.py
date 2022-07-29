@@ -289,7 +289,7 @@ class ManifoldEstimator:
             radii[radii > max_distances] = 0
         return radii
 
-    def pytorch_pairwise_distance(U,V):
+    def pytorch_pairwise_distance(self, U,V):
         # U is an numpy array of shape M,D
         # V is an numpy array of shape N,D
         with torch.no_grad():
