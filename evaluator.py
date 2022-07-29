@@ -369,6 +369,7 @@ class ManifoldEstimator:
             for begin_2 in range(0, len(features_2), self.col_batch_size):
                 end_2 = begin_2 + self.col_batch_size
                 batch_2 = features_2[begin_2:end_2]
+                pdb.set_trace()
                 batch_1_in, batch_2_in = self.distance_block.less_thans(
                     batch_1, radii_1[begin_1:end_1], batch_2, radii_2[begin_2:end_2]
                 )
