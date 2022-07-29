@@ -51,7 +51,7 @@ class feature_extractor(object):
         with torch.no_grad():
 
             generated_data = ImageDataset(self.generated_dir, self.data_size, self.batch_size)
-            generated_loader = DataLoader(generated_data, batch_size=self.batch_size, shuffle=True)
+            generated_loader = DataLoader(generated_data, batch_size=self.batch_size, shuffle=False)
 
             for imgs, img_paths in tqdm(generated_loader, ncols=80):
                 target_features = cnn(imgs)
@@ -63,7 +63,7 @@ class feature_extractor(object):
                     generated_features.append(target_feature)
 
             real_data = ImageDataset(self.real_dir, self.data_size, self.batch_size)
-            real_loader = DataLoader(real_data, batch_size=self.batch_size, shuffle=True)
+            real_loader = DataLoader(real_data, batch_size=self.batch_size, shuffle=False)
 
             for imgs, _ in tqdm(real_loader, ncols=80):
                 target_features = cnn(imgs)
@@ -84,7 +84,7 @@ class feature_extractor(object):
         plt.title(Image)
         plt.pause(10) # pause a bit so that plots are updated
 
-
+import random
 class ImageDataset(Dataset):
     def __init__(self, dir_path, data_size=100, batch_size=64):
         self.dir_path = dir_path
@@ -93,7 +93,9 @@ class ImageDataset(Dataset):
 
         self.img_paths = []
 
-        for i, img_name in enumerate(os.listdir(dir_path)):
+        files = os.listdir(dir_path)
+        random.shuffle(files)
+        for i, img_name in enumerate(files):
             if i >= data_size:
                 break
             img_path = os.path.join(dir_path, img_name)
