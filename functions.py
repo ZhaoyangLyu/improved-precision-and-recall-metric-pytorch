@@ -49,15 +49,15 @@ class precision_and_recall(object):
         print("Precision:", precision)        
         print("Recall:", recall)
 
-        # config = tf.ConfigProto(
-        #     allow_soft_placement=True  # allows DecodeJpeg to run on CPU in Inception graph
-        # )
-        # config.gpu_options.allow_growth = True
-        # evaluator = Evaluator(tf.Session(config=config))
-        # print("warming up TensorFlow...")
-        # # This will cause TF to print a bunch of verbose stuff now rather
-        # # than after the next print(), to help prevent confusion.
-        # evaluator.warmup()
+        config = tf.ConfigProto(
+            allow_soft_placement=True  # allows DecodeJpeg to run on CPU in Inception graph
+        )
+        config.gpu_options.allow_growth = True
+        evaluator = Evaluator(tf.Session(config=config))
+        print("warming up TensorFlow...")
+        # This will cause TF to print a bunch of verbose stuff now rather
+        # than after the next print(), to help prevent confusion.
+        evaluator.warmup()
 
         real_features = [real.cpu().numpy() for real in real_features]
         generated_features = [generated.cpu().numpy() for generated in generated_features]
