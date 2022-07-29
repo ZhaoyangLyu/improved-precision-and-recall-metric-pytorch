@@ -196,11 +196,11 @@ class Evaluator:
     def compute_prec_recall(
         self, activations_ref: np.ndarray, activations_sample: np.ndarray
     ) -> Tuple[float, float]:
-        radii_2 = self.manifold_estimator.manifold_radii(activations_sample)
+        # radii_2 = self.manifold_estimator.manifold_radii(activations_sample)
         radii_1 = self.manifold_estimator.manifold_radii(activations_ref)
         radii_2 = self.manifold_estimator.manifold_radii(activations_sample)
-        radii_1 = self.manifold_estimator.manifold_radii(activations_ref)
-        pdb.set_trace()
+        # radii_1 = self.manifold_estimator.manifold_radii(activations_ref)
+        # pdb.set_trace()
         pr = self.manifold_estimator.evaluate_pr(
             activations_ref, radii_1, activations_sample, radii_2
         )
@@ -282,7 +282,7 @@ class ManifoldEstimator:
                 ],
                 axis=0,
             )
-        pdb.set_trace()
+        # pdb.set_trace()
 
         if self.clamp_to_percentile is not None:
             max_distances = np.percentile(radii, self.clamp_to_percentile, axis=0)
