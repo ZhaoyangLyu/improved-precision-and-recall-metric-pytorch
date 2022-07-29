@@ -60,8 +60,8 @@ class precision_and_recall(object):
         real_features = [real.cpu().numpy() for real in real_features]
         generated_features = [generated.cpu().numpy() for generated in generated_features]
 
-        real_features = np.concatenate(real_features, axis=0).contiguous()
-        generated_features = np.concatenate(generated_features, axis=0).contiguous()
+        real_features = np.ascontiguousarray(np.concatenate(real_features, axis=0))
+        generated_features = np.ascontiguousarray(np.concatenate(generated_features, axis=0))
 
         prec, recall = evaluator.compute_prec_recall(real_features, generated_features)
         print("Precision:", prec)
