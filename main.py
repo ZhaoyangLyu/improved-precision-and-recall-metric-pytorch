@@ -13,7 +13,7 @@ def parse_args():
     parser.add_argument('--batch_size', type=int, default=64, help='The size of batch')
     parser.add_argument('--cpu', action='store_true')
     parser.add_argument('--seed', type=int, default=0)
-    parser.add_argument('--data_size', type=int, default=100)
+    parser.add_argument('--data_size', type=int, default=50000)
 
     parser.add_argument('--generated_dir', default=G_DIRECTORY)
     parser.add_argument('--real_dir', default=R_DIRECTORY)
@@ -48,4 +48,7 @@ def main():
     print("Job finised!")
 
 if __name__ == '__main__':
+    '''
+    python main.py --generated_dir /home/xuxudong/zylyu_2196/ddpms/My_DDIM/diffusion_and_reverse/image_generation_exps/stylegan2_generated_celeba_64_imgs/model_trained_first_210_steps/ckpt_45000_epoch_28/diffusion_and_reverse_images_from_t_200_var_type_fixedlarge --real_dir /home/xuxudong/zylyu_2196/ddpms/My_DDIM/diffusion_and_reverse/image_generation_exps/stylegan2_generated_celeba_64_imgs/model_trained_first_210_steps/ckpt_45000_epoch_28/diffusion_and_reverse_images_from_t_200_var_type_fixedlarge
+    '''
     main()   
