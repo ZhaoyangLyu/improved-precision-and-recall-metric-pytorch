@@ -9,7 +9,7 @@ from tqdm import tqdm
 
 # from evaluator import Evaluator
 import tensorflow.compat.v1 as tf
-tf.disable_v2_behavior()
+tf.disable_eager_execution()
 from precision_recall import knn_precision_recall_features
 
 import pdb
