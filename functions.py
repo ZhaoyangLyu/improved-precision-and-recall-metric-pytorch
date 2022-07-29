@@ -7,8 +7,10 @@ import operator
 from dataloader import feature_extractor
 from tqdm import tqdm
 
-from evaluator import Evaluator
-import tensorflow.compat.v1 as tf
+# from evaluator import Evaluator
+# import tensorflow.compat.v1 as tf
+import tensorflow as tf
+from precision_recall import knn_precision_recall_features
 
 import pdb
 
@@ -47,15 +49,15 @@ class precision_and_recall(object):
         print("Precision:", precision)        
         print("Recall:", recall)
 
-        config = tf.ConfigProto(
-            allow_soft_placement=True  # allows DecodeJpeg to run on CPU in Inception graph
-        )
-        config.gpu_options.allow_growth = True
-        evaluator = Evaluator(tf.Session(config=config))
-        print("warming up TensorFlow...")
-        # This will cause TF to print a bunch of verbose stuff now rather
-        # than after the next print(), to help prevent confusion.
-        evaluator.warmup()
+        # config = tf.ConfigProto(
+        #     allow_soft_placement=True  # allows DecodeJpeg to run on CPU in Inception graph
+        # )
+        # config.gpu_options.allow_growth = True
+        # evaluator = Evaluator(tf.Session(config=config))
+        # print("warming up TensorFlow...")
+        # # This will cause TF to print a bunch of verbose stuff now rather
+        # # than after the next print(), to help prevent confusion.
+        # evaluator.warmup()
 
         real_features = [real.cpu().numpy() for real in real_features]
         generated_features = [generated.cpu().numpy() for generated in generated_features]
@@ -64,9 +66,13 @@ class precision_and_recall(object):
         generated_features = np.ascontiguousarray(np.concatenate(generated_features, axis=0))
 
         # prec, recall = evaluator.compute_prec_recall(real_features, generated_features)
-        prec, recall = evaluator.compute_prec_recall(generated_features, real_features)
-        print("Precision:", prec)
-        print("Recall:", recall)
+        # prec, recall = evaluator.compute_prec_recall(generated_features, real_features)
+        # print("Precision:", prec)
+        # print("Recall:", recall)
+
+        state = knn_precision_recall_features(real_features, generated_features, num_gpus=num_gpus)
+        print('Precision: %0.3f' % state['precision'][0])
+        print('Recall: %0.3f' % state['recall'][0])
 
     def manifold_estimate(self, A_features, B_features, k):
         
