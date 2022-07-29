@@ -51,7 +51,7 @@ class feature_extractor(object):
         with torch.no_grad():
 
             generated_data = ImageDataset(self.generated_dir, self.data_size, self.batch_size)
-            generated_loader = DataLoader(generated_data, batch_size=self.batch_size, shuffle=False)
+            generated_loader = DataLoader(generated_data, batch_size=self.batch_size, shuffle=True)
 
             for imgs, img_paths in tqdm(generated_loader, ncols=80):
                 target_features = cnn(imgs)
@@ -63,7 +63,7 @@ class feature_extractor(object):
                     generated_features.append(target_feature)
 
             real_data = ImageDataset(self.real_dir, self.data_size, self.batch_size)
-            real_loader = DataLoader(real_data, batch_size=self.batch_size, shuffle=False)
+            real_loader = DataLoader(real_data, batch_size=self.batch_size, shuffle=True)
 
             for imgs, _ in tqdm(real_loader, ncols=80):
                 target_features = cnn(imgs)
