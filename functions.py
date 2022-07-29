@@ -8,8 +8,7 @@ from dataloader import feature_extractor
 from tqdm import tqdm
 
 # from evaluator import Evaluator
-# import tensorflow.compat.v1 as tf
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
 from precision_recall import knn_precision_recall_features
 
 import pdb

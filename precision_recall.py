@@ -8,7 +8,8 @@
 """k-NN precision and recall."""
 
 import numpy as np
-import tensorflow as tf
+# import tensorflow as tf
+import tensorflow.compat.v1 as tf
 from time import time
 
 #----------------------------------------------------------------------------
