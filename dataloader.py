@@ -135,7 +135,7 @@ class ImageDataset(Dataset):
         self.transformations = transforms.Compose([
             transforms.Resize(self.imsize),  # scale imported image
             transforms.ToTensor(),
-            transforms.Lambda(lambda x: x[torch.LongTensor([2,1,0])]), #turn to BGR
+            # transforms.Lambda(lambda x: x[torch.LongTensor([2,1,0])]), #turn to BGR
             transforms.Normalize(mean=[0.40760392, 0.45795686, 0.48501961], #subtract imagenet mean
             std=[1,1,1]),
             transforms.Lambda(lambda x: x.mul_(255)),
