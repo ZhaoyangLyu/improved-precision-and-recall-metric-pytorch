@@ -114,11 +114,9 @@ class ImageDataset(Dataset):
     def __init__(self, dir_path, data_size=100, batch_size=64):
         self.dir_path = dir_path
 
-        pdb.set_trace()
-
         # data_size = data_size - data_size%batch_size
         if data_size == 'all':
-            data_size == np.infty
+            data_size = np.infty
         self.img_paths = []
 
         files = os.listdir(dir_path)
