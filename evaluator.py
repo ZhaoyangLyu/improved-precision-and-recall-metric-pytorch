@@ -15,7 +15,7 @@ import numpy as np
 import requests
 # import tensorflow.compat.v1 as tf
 from scipy import linalg
-from tqdm.auto import tqdm
+from tqdm import tqdm
 
 import torch
 
@@ -29,9 +29,12 @@ class Evaluator:
         self, activations_ref: np.ndarray, activations_sample: np.ndarray
     ) -> Tuple[float, float]:
         
+        print('computing radii for real image features')
         radii_1 = self.manifold_estimator.manifold_radii(activations_ref)
+        print('computing radii for generated image features')
         radii_2 = self.manifold_estimator.manifold_radii(activations_sample)
-       
+
+        print('computing precision and recall')
         pr = self.manifold_estimator.evaluate_pr(
             activations_ref, radii_1, activations_sample, radii_2
         )
@@ -81,7 +84,7 @@ class ManifoldEstimator:
         distance_batch = np.zeros([self.row_batch_size, num_images], dtype=np.float32)
         seq = np.arange(max(self.nhood_sizes) + 1, dtype=np.int32)
 
-        for begin1 in range(0, num_images, self.row_batch_size):
+        for begin1 in tqdm(range(0, num_images, self.row_batch_size)):
             end1 = min(begin1 + self.row_batch_size, num_images)
             row_batch = features[begin1:end1]
 
@@ -137,7 +140,7 @@ class ManifoldEstimator:
         
         features_1_status = np.zeros([features_1.shape[0], radii_2.shape[1]], dtype=np.bool)
         features_2_status = np.zeros([features_2.shape[0], radii_1.shape[1]], dtype=np.bool)
-        for begin_1 in range(0, features_1.shape[0], self.row_batch_size):
+        for begin_1 in tqdm(range(0, features_1.shape[0], self.row_batch_size)):
             end_1 = begin_1 + self.row_batch_size
             batch_1 = features_1[begin_1:end_1]
             for begin_2 in range(0, features_2.shape[0], self.col_batch_size):

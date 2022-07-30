@@ -55,6 +55,7 @@ class feature_extractor(object):
             generated_data = ImageDataset(self.generated_dir, self.data_size, self.batch_size)
             generated_loader = DataLoader(generated_data, batch_size=self.batch_size, shuffle=False)
 
+            print('extracting features for generated images')
             for imgs, img_paths in tqdm(generated_loader, ncols=80):
                 target_features = cnn(imgs)
 
@@ -81,6 +82,7 @@ class feature_extractor(object):
                 real_data = ImageDataset(self.real_dir, self.data_size, self.batch_size)
                 real_loader = DataLoader(real_data, batch_size=self.batch_size, shuffle=False)
 
+                print('extracting features for real images')
                 for imgs, _ in tqdm(real_loader, ncols=80):
                     target_features = cnn(imgs)
                     real_features.append(target_features.detach().cpu().numpy())
