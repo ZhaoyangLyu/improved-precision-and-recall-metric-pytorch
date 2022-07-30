@@ -22,15 +22,35 @@ import torch
 
 
 class Evaluator:
-    def __init__(self):
+    def __init__(self, dataset=None, cache=False, data_size=50000):
         self.manifold_estimator = ManifoldEstimator()
+
+        self.read_from_cache = False
+        self.save_cache = False
+        if dataset in ['cifar10', 'celeba64', 'celeba128'] and cache:
+            self.cache_file = './datasets/cache/%s/%d_sample_radii.npz' % (dataset, data_size)
+            if os.path.exists(cache_file):
+                self.read_from_cache = True
+            else:
+                self.save_cache = True
 
     def compute_prec_recall(
         self, activations_ref: np.ndarray, activations_sample: np.ndarray
     ) -> Tuple[float, float]:
         
-        print('computing radii for real image features')
-        radii_1 = self.manifold_estimator.manifold_radii(activations_ref)
+        if self.read_from_cache:
+            data = np.load(self.cache_file)
+            radii_1 = data['arr_0']
+            print('radii for real image features loaded from cache', self.cache_file)
+        else:
+            print('computing radii for real image features')
+            radii_1 = self.manifold_estimator.manifold_radii(activations_ref)
+            if self.save_cache:
+                cache_dir = os.path.split(self.cache_file)[0]
+                os.makedirs(cache_dir, exist_ok=True)
+                np.savez(self.cache_file, radii_1)
+                print('computed radii for real image features cached to', cache_file)
+
         print('computing radii for generated image features')
         radii_2 = self.manifold_estimator.manifold_radii(activations_sample)
 
