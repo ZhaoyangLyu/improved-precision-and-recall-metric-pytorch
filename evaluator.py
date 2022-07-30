@@ -289,14 +289,16 @@ class ManifoldEstimator:
             radii[radii > max_distances] = 0
         return radii
 
-    def pytorch_pairwise_distance(self, U,V):
+    def pytorch_pairwise_distance(self, U,V, return_numpy=True):
         # U is an numpy array of shape M,D
         # V is an numpy array of shape N,D
         with torch.no_grad():
             U_t = torch.from_numpy(U).unsqueeze(0).cuda() # 1,M,D
             V_t = torch.from_numpy(V).unsqueeze(0).cuda() # 1,N,D
             DD = torch.cdist(U_t, V_t, p=2.0) # 1,M,N
-            DD = DD.squeeze(0).cpu().numpy()
+            DD = DD.squeeze(0) # M,N
+            if return_numpy:
+                DD = DD.cpu().numpy()
         return DD
 
 
@@ -369,16 +371,35 @@ class ManifoldEstimator:
             for begin_2 in range(0, len(features_2), self.col_batch_size):
                 end_2 = begin_2 + self.col_batch_size
                 batch_2 = features_2[begin_2:end_2]
-                pdb.set_trace()
-                batch_1_in, batch_2_in = self.distance_block.less_thans(
-                    batch_1, radii_1[begin_1:end_1], batch_2, radii_2[begin_2:end_2]
-                )
+                # pdb.set_trace()
+                # batch_1_in, batch_2_in = self.distance_block.less_thans(
+                #     batch_1, radii_1[begin_1:end_1], batch_2, radii_2[begin_2:end_2]
+                # )
+                batch_1_in, batch_2_in = self.pytorch_less_than(batch_1, radii_1[begin_1:end_1], batch_2, radii_2[begin_2:end_2])
                 features_1_status[begin_1:end_1] |= batch_1_in
                 features_2_status[begin_2:end_2] |= batch_2_in
         return (
             np.mean(features_2_status.astype(np.float64), axis=0),
             np.mean(features_1_status.astype(np.float64), axis=0),
         )
+
+    def pytorch_less_than(self, batch_1, radii_1, batch_2, radii_2):
+        # batch_1 M,D; radii_1, M,1
+        # batch_2 N,D; radii_2, N,1
+        radii_1t = torch.from_numpy(radii_1t).cuda() # M,1
+        radii_2t = torch.from_numpy(radii_2t).cuda().transpose(0,1) # 1,N
+        DD = self.pytorch_pairwise_distance(batch_1, batch_2, return_numpy=False) # M,N
+
+        batch1_in = (DD <= radii_2t).long() # M,N
+        batch1_in = batch1_in.max(dim=1) # M
+        batch1_in = batch1_in.cpu().numpy().astype(np.bool)
+
+        batch2_in = (DD <= radii_1t).long() # M,N
+        batch2_in = batch2_in.max(dim=0) # N
+        batch2_in = batch2_in.cpu().numpy().astype(np.bool)
+        return batch1_in, batch2_in
+
+
 
 
 class DistanceBlock:
