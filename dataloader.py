@@ -1,4 +1,5 @@
 import os, torch
+import numpy as np
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
@@ -67,7 +68,7 @@ class feature_extractor(object):
             real_data = ImageDataset(self.real_dir, self.data_size, self.batch_size)
             real_loader = DataLoader(real_data, batch_size=self.batch_size, shuffle=False)
 
-            pdb.set_trace()
+            # pdb.set_trace()
 
             for imgs, _ in tqdm(real_loader, ncols=80):
                 target_features = cnn(imgs)
