@@ -28,7 +28,7 @@ class Evaluator:
         self.read_from_cache = False
         self.save_cache = False
         if dataset in ['cifar10', 'celeba64', 'celeba128'] and cache:
-            self.cache_file = './datasets/cache/%s/%d_sample_radii.npz' % (dataset, data_size)
+            self.cache_file = './datasets/cache/%s/%s_sample_radii.npz' % (dataset, str(data_size))
             if os.path.exists(self.cache_file):
                 self.read_from_cache = True
             else:

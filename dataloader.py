@@ -68,7 +68,7 @@ class feature_extractor(object):
             read_from_cache = False
             save_cache = False
             if self.args.dataset in ['cifar10', 'celeba64', 'celeba128'] and self.args.cache:
-                cache_file = './datasets/cache/%s/%d_sample_features.npz' % (self.args.dataset, self.data_size)
+                cache_file = './datasets/cache/%s/%s_sample_features.npz' % (self.args.dataset, str(self.data_size))
                 if os.path.exists(cache_file):
                     read_from_cache = True
                 else:
@@ -115,7 +115,8 @@ class ImageDataset(Dataset):
         self.dir_path = dir_path
 
         # data_size = data_size - data_size%batch_size
-
+        if data_size == 'all':
+            data_size == np.infty
         self.img_paths = []
 
         files = os.listdir(dir_path)

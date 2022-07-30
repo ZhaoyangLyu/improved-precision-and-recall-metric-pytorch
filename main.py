@@ -1,5 +1,6 @@
 import argparse, os, torch
 from functions import precision_and_recall, realism
+from typing import Union
 
 G_DIRECTORY = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'truncation_0_7')
 R_DIRECTORY = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'images1024x1024')
@@ -13,7 +14,7 @@ def parse_args():
     parser.add_argument('--batch_size', type=int, default=64, help='The size of batch')
     parser.add_argument('--cpu', action='store_true')
     parser.add_argument('--seed', type=int, default=0)
-    parser.add_argument('--data_size', type=int, default=50000)
+    parser.add_argument('--data_size', type=Union[int,str], default=50000, help='number of sample to consider, could also be set to all tp handle all samples')
 
     parser.add_argument('--generated_dir', default=G_DIRECTORY)
     parser.add_argument('--real_dir', default=R_DIRECTORY)
@@ -65,5 +66,7 @@ if __name__ == '__main__':
     python main.py --generated_dir ./datasets/cifar10 --real_dir ./datasets/cifar10 --data_size 100
 
     python main.py --generated_dir /home/xuxudong/zylyu_2196/ddpms/stylegan2-ada-pytorch/cifar10_stylegan_ada_unconditional/images  --data_size 50000 --dataset cifar10 --cache
+
+    python main.py --generated_dir /home/zylyu/new_pool/ddpms/My_DDIM/diffusion_and_reverse/image_generation_exps/celeba_64_large_model_trained_full_1000_steps/ckpt_300000_epoch_189  --data_size all --dataset celeba64 --cache
     '''
     main()   
