@@ -12,7 +12,7 @@ import torchvision.models as models
 from torch.utils.data import DataLoader
 from torch.utils.data.dataset import Dataset  # For custom datasets
 
-from torchsummary import summary
+# from torchsummary import summary
 from tqdm import tqdm
 import pdb
 
