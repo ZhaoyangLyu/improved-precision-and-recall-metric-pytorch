@@ -29,7 +29,7 @@ class Evaluator:
         self.save_cache = False
         if dataset in ['cifar10', 'celeba64', 'celeba128'] and cache:
             self.cache_file = './datasets/cache/%s/%d_sample_radii.npz' % (dataset, data_size)
-            if os.path.exists(cache_file):
+            if os.path.exists(self.cache_file):
                 self.read_from_cache = True
             else:
                 self.save_cache = True
@@ -49,7 +49,7 @@ class Evaluator:
                 cache_dir = os.path.split(self.cache_file)[0]
                 os.makedirs(cache_dir, exist_ok=True)
                 np.savez(self.cache_file, radii_1)
-                print('computed radii for real image features cached to', cache_file)
+                print('computed radii for real image features cached to', self.cache_file)
 
         print('computing radii for generated image features')
         radii_2 = self.manifold_estimator.manifold_radii(activations_sample)
