@@ -14,7 +14,7 @@ def parse_args():
     parser.add_argument('--batch_size', type=int, default=64, help='The size of batch')
     parser.add_argument('--cpu', action='store_true')
     parser.add_argument('--seed', type=int, default=0)
-    parser.add_argument('--data_size', type=Union[int,str], default=50000, help='number of sample to consider, could also be set to all tp handle all samples')
+    parser.add_argument('--data_size', type=str, default='50000', help='number of sample to consider, could also be set to string all t0 handle all samples')
 
     parser.add_argument('--generated_dir', default=G_DIRECTORY)
     parser.add_argument('--real_dir', default=R_DIRECTORY)
@@ -47,6 +47,9 @@ def main():
     if args.dataset in ['cifar10', 'celeba64', 'celeba128']:
         args.real_dir = datasets_path[args.dataset]
         print('using ref images from the directory', args.real_dir)
+
+    if not args.data_size == 'all':
+        args.data_size = int(args.data_size)
 
     if args.cal_type == 'precision_and_recall':
         task = precision_and_recall(args)
