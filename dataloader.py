@@ -60,25 +60,37 @@ class feature_extractor(object):
 
                 img_paths = list(img_paths)
                 generated_img_paths.extend(img_paths)
-
-                # for target_feature in torch.chunk(target_features, target_features.size(0), dim=0):
-                #     generated_features.append(target_feature)
                 generated_features.append(target_features.detach().cpu().numpy())
 
-            real_data = ImageDataset(self.real_dir, self.data_size, self.batch_size)
-            real_loader = DataLoader(real_data, batch_size=self.batch_size, shuffle=False)
+            generated_features = np.ascontiguousarray(np.concatenate(generated_features, axis=0))
 
-            # pdb.set_trace()
+            read_from_cache = False
+            save_cache = False
+            if self.args.dataset in ['cifar10', 'celeba64', 'celeba128'] and self.args.cache:
+                cache_file = './datasets/cache/%s/%d_sample_features.npz' % (self.args.dataset, self.data_size)
+                if os.path.exists(cache_file):
+                    read_from_cache = True
+                else:
+                    save_cache = True
 
-            for imgs, _ in tqdm(real_loader, ncols=80):
-                target_features = cnn(imgs)
+            if read_from_cache:
+                data = np.load(cache_file)
+                real_features = data['arr_0']
+                print('real data features loaded from cache', cache_file)
+            else:
+                real_data = ImageDataset(self.real_dir, self.data_size, self.batch_size)
+                real_loader = DataLoader(real_data, batch_size=self.batch_size, shuffle=False)
 
-                # for target_feature in torch.chunk(target_features, target_features.size(0), dim=0):
-                #     real_features.append(target_feature)
-                real_features.append(target_features.detach().cpu().numpy())
+                for imgs, _ in tqdm(real_loader, ncols=80):
+                    target_features = cnn(imgs)
+                    real_features.append(target_features.detach().cpu().numpy())
 
-        generated_features = np.ascontiguousarray(np.concatenate(generated_features, axis=0))
-        real_features = np.ascontiguousarray(np.concatenate(real_features, axis=0))
+                real_features = np.ascontiguousarray(np.concatenate(real_features, axis=0))
+                if save_cache:
+                    cache_dir = os.path.split(cache_file)[0]
+                    os.makedirs(cache_dir, exist_ok=True)
+                    np.savez(cache_file, real_features)
+                    print('computed real data features cached to', cache_file)
 
         return generated_features, real_features, generated_img_paths
 

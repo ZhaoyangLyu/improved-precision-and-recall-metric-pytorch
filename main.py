@@ -17,6 +17,7 @@ def parse_args():
 
     parser.add_argument('--generated_dir', default=G_DIRECTORY)
     parser.add_argument('--real_dir', default=R_DIRECTORY)
+    parser.add_argument('--cache', action='store_true', help='whether to cache features and use cached features for real images from cifar10, celeba64, celeba128')
 
     parser.add_argument('--dataset', type = str, default='none', help='could be cifar10, celeba64, celeba128, or none')
     print(parser.parse_args())
