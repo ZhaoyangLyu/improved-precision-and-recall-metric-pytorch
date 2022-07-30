@@ -46,7 +46,7 @@ class precision_and_recall(object):
         # print("Precision:", precision)        
         # print("Recall:", recall)
 
-        evaluator = Evaluator()
+        evaluator = Evaluator(dataset=self.args.dataset, cache=self.args.cache, data_size=self.args.data_size)
 
         # real_features = [real.cpu().numpy() for real in real_features]
         # generated_features = [generated.cpu().numpy() for generated in generated_features]
