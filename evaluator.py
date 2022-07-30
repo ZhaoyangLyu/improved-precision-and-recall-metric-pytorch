@@ -392,6 +392,7 @@ class ManifoldEstimator:
 
         batch1_in = (DD <= radii_2t).long() # M,N
         batch1_in = batch1_in.max(dim=1) # M
+        pdb.set_trace()
         batch1_in = batch1_in.cpu().numpy().astype(np.bool)
 
         batch2_in = (DD <= radii_1t).long() # M,N
