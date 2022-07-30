@@ -40,11 +40,11 @@ class precision_and_recall(object):
         real_features = real_features[:data_num]
 
         # get precision and recall
-        precision = self.manifold_estimate(real_features, generated_features, self.k)
-        recall = self.manifold_estimate(generated_features, real_features, self.k)
+        # precision = self.manifold_estimate(real_features, generated_features, self.k)
+        # recall = self.manifold_estimate(generated_features, real_features, self.k)
  
-        print("Precision:", precision)        
-        print("Recall:", recall)
+        # print("Precision:", precision)        
+        # print("Recall:", recall)
 
         evaluator = Evaluator()
 
