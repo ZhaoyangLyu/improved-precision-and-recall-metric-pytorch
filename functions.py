@@ -8,9 +8,6 @@ from dataloader import feature_extractor
 from tqdm import tqdm
 
 from evaluator import Evaluator
-# import tensorflow.compat.v1 as tf
-# tf.disable_eager_execution()
-# from precision_recall import knn_precision_recall_features
 
 import pdb
 
@@ -49,15 +46,7 @@ class precision_and_recall(object):
         print("Precision:", precision)        
         print("Recall:", recall)
 
-        # config = tf.ConfigProto(
-        #     allow_soft_placement=True  # allows DecodeJpeg to run on CPU in Inception graph
-        # )
-        # config.gpu_options.allow_growth = True
         evaluator = Evaluator()
-        # print("warming up TensorFlow...")
-        # # This will cause TF to print a bunch of verbose stuff now rather
-        # # than after the next print(), to help prevent confusion.
-        # evaluator.warmup()
 
         real_features = [real.cpu().numpy() for real in real_features]
         generated_features = [generated.cpu().numpy() for generated in generated_features]
@@ -68,10 +57,6 @@ class precision_and_recall(object):
         prec, recall = evaluator.compute_prec_recall(real_features, generated_features)
         print("Precision:", prec)
         print("Recall:", recall)
-
-        # state = knn_precision_recall_features(real_features, generated_features, num_gpus=1)
-        # print('Precision: %0.3f' % state['precision'][0])
-        # print('Recall: %0.3f' % state['recall'][0])
 
     def manifold_estimate(self, A_features, B_features, k):
         
@@ -96,38 +81,6 @@ class precision_and_recall(object):
                     break
 
         return n/len(B_features)
-
-def knn(U,V,k=3,row_batch_size=10000,col_batch_size=10000):
-    # U is an numpy array of shape M,D
-    # V is an numpy array of shape N,D
-    num_images = U.shape[0]
-
-    # Estimate manifold of features by calculating distances to k-NN of each sample.
-    radii = np.zeros([num_images, k], dtype=np.float32)
-    distance_batch = np.zeros([self.row_batch_size, num_images], dtype=np.float32)
-    seq = np.arange(k + 1, dtype=np.int32)
-
-    for begin1 in range(0, num_images, self.row_batch_size):
-        end1 = min(begin1 + self.row_batch_size, num_images)
-        row_batch = features[begin1:end1]
-
-        for begin2 in range(0, num_images, self.col_batch_size):
-            end2 = min(begin2 + self.col_batch_size, num_images)
-            col_batch = features[begin2:end2]
-
-            # Compute distances between batches.
-            distance_batch[
-                0 : end1 - begin1, begin2:end2
-            ] = self.distance_block.pairwise_distances(row_batch, col_batch)
-
-        # Find the k-nearest neighbor from the current batch.
-        radii[begin1:end1, :] = np.concatenate(
-            [
-                x[:, self.nhood_sizes]
-                for x in _numpy_partition(distance_batch[0 : end1 - begin1, :], seq, axis=1)
-            ],
-            axis=0,
-        )
 
 
 class realism(object):

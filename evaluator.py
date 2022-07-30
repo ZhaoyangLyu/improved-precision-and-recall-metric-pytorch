@@ -23,24 +23,15 @@ import torch
 
 class Evaluator:
     def __init__(self):
-        # self.sess = session
-        # self.batch_size = batch_size
-        # self.softmax_batch_size = softmax_batch_size
         self.manifold_estimator = ManifoldEstimator()
-        # with self.sess.graph.as_default():
-        #     self.image_input = tf.placeholder(tf.float32, shape=[None, None, None, 3])
-        #     self.softmax_input = tf.placeholder(tf.float32, shape=[None, 2048])
-        #     self.pool_features, self.spatial_features = _create_feature_graph(self.image_input)
-        #     self.softmax = _create_softmax_graph(self.softmax_input)
 
     def compute_prec_recall(
         self, activations_ref: np.ndarray, activations_sample: np.ndarray
     ) -> Tuple[float, float]:
-        # radii_2 = self.manifold_estimator.manifold_radii(activations_sample)
+        
         radii_1 = self.manifold_estimator.manifold_radii(activations_ref)
         radii_2 = self.manifold_estimator.manifold_radii(activations_sample)
-        # radii_1 = self.manifold_estimator.manifold_radii(activations_ref)
-        # pdb.set_trace()
+       
         pr = self.manifold_estimator.evaluate_pr(
             activations_ref, radii_1, activations_sample, radii_2
         )
