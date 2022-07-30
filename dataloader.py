@@ -132,14 +132,21 @@ class ImageDataset(Dataset):
         self.imsize = 224 # for vgg input size
 
         # https://github.com/leongatys/PytorchNeuralStyleTransfer
+        normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                                     std=[0.229, 0.224, 0.225])
         self.transformations = transforms.Compose([
             transforms.Resize(self.imsize),  # scale imported image
             transforms.ToTensor(),
-            # transforms.Lambda(lambda x: x[torch.LongTensor([2,1,0])]), #turn to BGR
-            transforms.Normalize(mean=[0.40760392, 0.45795686, 0.48501961], #subtract imagenet mean
-            std=[1,1,1]),
-            transforms.Lambda(lambda x: x.mul_(255)),
+            normalize,
             ])  # transform it into a torch tensor
+        # self.transformations = transforms.Compose([
+        #     transforms.Resize(self.imsize),  # scale imported image
+        #     transforms.ToTensor(),
+        #     # transforms.Lambda(lambda x: x[torch.LongTensor([2,1,0])]), #turn to BGR
+        #     transforms.Normalize(mean=[0.40760392, 0.45795686, 0.48501961], #subtract imagenet mean
+        #     std=[1,1,1]),
+        #     transforms.Lambda(lambda x: x.mul_(255)),
+        #     ])  # transform it into a torch tensor
 
     def __getitem__(self, idx):
         img_path = self.img_paths[idx]
