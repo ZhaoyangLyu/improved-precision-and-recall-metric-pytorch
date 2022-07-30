@@ -66,7 +66,7 @@ class feature_extractor(object):
             real_data = ImageDataset(self.real_dir, self.data_size, self.batch_size)
             real_loader = DataLoader(real_data, batch_size=self.batch_size, shuffle=False)
 
-            pdb.set_trace()
+            # pdb.set_trace()
 
             for imgs, _ in tqdm(real_loader, ncols=80):
                 target_features = cnn(imgs)
@@ -94,7 +94,7 @@ class ImageDataset(Dataset):
     def __init__(self, dir_path, data_size=100, batch_size=64):
         self.dir_path = dir_path
 
-        data_size = data_size - data_size%batch_size
+        # data_size = data_size - data_size%batch_size
 
         self.img_paths = []
 
