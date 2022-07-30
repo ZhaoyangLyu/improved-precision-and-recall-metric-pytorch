@@ -386,8 +386,8 @@ class ManifoldEstimator:
     def pytorch_less_than(self, batch_1, radii_1, batch_2, radii_2):
         # batch_1 M,D; radii_1, M,1
         # batch_2 N,D; radii_2, N,1
-        radii_1t = torch.from_numpy(radii_1t).cuda() # M,1
-        radii_2t = torch.from_numpy(radii_2t).cuda().transpose(0,1) # 1,N
+        radii_1t = torch.from_numpy(radii_1).cuda() # M,1
+        radii_2t = torch.from_numpy(radii_2).cuda().transpose(0,1) # 1,N
         DD = self.pytorch_pairwise_distance(batch_1, batch_2, return_numpy=False) # M,N
 
         batch1_in = (DD <= radii_2t).long() # M,N
