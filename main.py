@@ -63,5 +63,7 @@ if __name__ == '__main__':
     python main.py --generated_dir /home/xuxudong/zylyu_2196/ddpms/My_DDIM/diffusion_and_reverse/image_generation_exps/stylegan2_generated_celeba_64_imgs/model_trained_first_210_steps/ckpt_45000_epoch_28/diffusion_and_reverse_images_from_t_200_var_type_fixedlarge --real_dir /home/xuxudong/zylyu_2196/ddpms/My_DDIM/diffusion_and_reverse/image_generation_exps/stylegan2_generated_celeba_64_imgs/model_trained_first_210_steps/ckpt_45000_epoch_28/diffusion_and_reverse_images_from_t_200_var_type_fixedlarge --data_size 100
 
     python main.py --generated_dir ./datasets/cifar10 --real_dir ./datasets/cifar10 --data_size 100
+
+    python main.py --generated_dir /home/xuxudong/zylyu_2196/ddpms/stylegan2-ada-pytorch/cifar10_stylegan_ada_unconditional/images  --data_size 50000 --dataset cifar10 --cache
     '''
     main()   

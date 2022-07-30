@@ -10,6 +10,9 @@ import os
 import pdb
 
 if __name__ == '__main__':
+    '''
+    python compute_fid_between_two_image_folders.py --folder1 /home/xuxudong/zylyu_2196/ddpms/stylegan2-ada-pytorch/cifar10_stylegan_ada_unconditional/images --dataset cifar10
+    '''
     parser = argparse.ArgumentParser()
     parser.add_argument('--folder1', type=str, default='../diffusion_and_reverse/image_generation_exps/stylegan2_generated_celeba_128_imgs/model_trained_first_110_steps/ckpt_1000000_epoch_236/diffusion_and_reverse_images_from_t_100', help='the first folder, the folder that we want to evaluate metrics')
 
@@ -53,7 +56,7 @@ if __name__ == '__main__':
         isc=True, 
         fid=True, 
         kid=True, 
-        verbose=False,
+        verbose=True,
         batch_size = args.batch_size,
         input2_cache_name=input2_cache_name
     )
