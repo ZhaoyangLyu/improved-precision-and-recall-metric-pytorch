@@ -48,11 +48,11 @@ class precision_and_recall(object):
 
         evaluator = Evaluator()
 
-        real_features = [real.cpu().numpy() for real in real_features]
-        generated_features = [generated.cpu().numpy() for generated in generated_features]
+        # real_features = [real.cpu().numpy() for real in real_features]
+        # generated_features = [generated.cpu().numpy() for generated in generated_features]
 
-        real_features = np.ascontiguousarray(np.concatenate(real_features, axis=0))
-        generated_features = np.ascontiguousarray(np.concatenate(generated_features, axis=0))
+        # real_features = np.ascontiguousarray(np.concatenate(real_features, axis=0))
+        # generated_features = np.ascontiguousarray(np.concatenate(generated_features, axis=0))
 
         prec, recall = evaluator.compute_prec_recall(real_features, generated_features)
         print("Precision:", prec)
@@ -60,23 +60,27 @@ class precision_and_recall(object):
 
     def manifold_estimate(self, A_features, B_features, k):
         
-        KNN_list_in_A = {}
-        for A in tqdm(A_features, ncols=80):
-            pairwise_distances = np.zeros(shape=(len(A_features)))
+        KNN_list_in_A = []
+        for j in tqdm(range(A_features.shape[0]), ncols=80):
+            A = torch.from_numpy(A_features[j,:]).cuda()
+            pairwise_distances = np.zeros(shape=(A_features.shape[0]))
 
-            for i, A_prime in enumerate(A_features):
+            for i in range(A_features.shape[0]):
+                A_prime = torch.from_numpy(A_features[i,:]).cuda()
                 d = torch.norm((A-A_prime), 2)
                 pairwise_distances[i] = d
 
             v = np.partition(pairwise_distances, k)[k]
-            KNN_list_in_A[A] = v
+            KNN_list_in_A.append(v)
 
         n = 0 
 
-        for B in tqdm(B_features, ncols=80):
-            for A_prime in A_features:
+        for i in tqdm(range(B_features.shape[0]), ncols=80):
+            B = torch.from_numpy(B_features[i,:]).cuda()
+            for j in range(A_features.shape[0]):
+                A_prime = torch.from_numpy(A_features[j,:]).cuda()
                 d = torch.norm((B-A_prime), 2)
-                if d <= KNN_list_in_A[A_prime]:
+                if d <= KNN_list_in_A[j]:
                     n+=1
                     break
 
