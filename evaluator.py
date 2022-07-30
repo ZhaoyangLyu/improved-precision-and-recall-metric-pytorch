@@ -391,12 +391,12 @@ class ManifoldEstimator:
         DD = self.pytorch_pairwise_distance(batch_1, batch_2, return_numpy=False) # M,N
 
         batch1_in = (DD <= radii_2t).long() # M,N
-        batch1_in = batch1_in.max(dim=1) # M
-        pdb.set_trace()
+        batch1_in = batch1_in.max(dim=1)[0] # M
+        # pdb.set_trace()
         batch1_in = batch1_in.cpu().numpy().astype(np.bool)
 
         batch2_in = (DD <= radii_1t).long() # M,N
-        batch2_in = batch2_in.max(dim=0) # N
+        batch2_in = batch2_in.max(dim=0)[0] # N
         batch2_in = batch2_in.cpu().numpy().astype(np.bool)
         return batch1_in, batch2_in
 
