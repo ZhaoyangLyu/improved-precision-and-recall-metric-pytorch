@@ -13,4 +13,4 @@ if __name__ == '__main__':
         save_name = '%d_label_%d.png' % (i, label)
         save_name = os.path.join(save_path, save_name)
         x.save(save_name)
-        pdb.set_trace()
+        # pdb.set_trace()
