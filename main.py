@@ -13,6 +13,7 @@ def parse_args():
     parser.add_argument('--result_dir', type=str, default='results', help='Directory name to save the model')
     parser.add_argument('--batch_size', type=int, default=64, help='The size of batch')
     parser.add_argument('--cpu', action='store_true')
+    parser.add_argument('--device', type=str, default='0', help='index of the gpu to use')
     parser.add_argument('--seed', type=int, default=0)
     parser.add_argument('--data_size', type=str, default='50000', help='number of sample to consider, could also be set to string all t0 handle all samples')
 
@@ -48,6 +49,12 @@ def main():
         args.real_dir = datasets_path[args.dataset]
         print('using ref images from the directory', args.real_dir)
 
+    if args.device == 'none':
+        print('User has not specified a cuda device')
+        print('Using the system (Slurm) allocated device', os.environ["CUDA_VISIBLE_DEVICES"])
+    else:
+        os.environ["CUDA_VISIBLE_DEVICES"] = args.device
+
     if not args.data_size == 'all':
         args.data_size = int(args.data_size)
 
@@ -71,5 +78,7 @@ if __name__ == '__main__':
     python main.py --generated_dir /home/xuxudong/zylyu_2196/ddpms/stylegan2-ada-pytorch/cifar10_stylegan_ada_unconditional/images  --data_size 50000 --dataset cifar10 --cache
 
     python main.py --generated_dir /home/zylyu/new_pool/ddpms/My_DDIM/diffusion_and_reverse/image_generation_exps/celeba_64_large_model_trained_full_1000_steps/ckpt_300000_epoch_189  --data_size all --dataset celeba64 --cache
+
+    python main.py --generated_dir /home/zylyu/new_pool/ddpms/pytorch_diffusion_cifar10/pytorch_diffusion/results/ema_cifar10  --data_size all --dataset cifar10 --cache
     '''
     main()   
