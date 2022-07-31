@@ -77,8 +77,10 @@ if __name__ == '__main__':
 
     python main.py --generated_dir /home/xuxudong/zylyu_2196/ddpms/stylegan2-ada-pytorch/cifar10_stylegan_ada_unconditional/images  --data_size 50000 --dataset cifar10 --cache
 
-    python main.py --generated_dir /home/zylyu/new_pool/ddpms/My_DDIM/diffusion_and_reverse/image_generation_exps/celeba_64_large_model_trained_full_1000_steps/ckpt_300000_epoch_189  --data_size all --dataset celeba64 --cache
+    python main.py --data_size all --dataset celeba64 --cache --generated_dir /home/zylyu/new_pool/ddpms/My_DDIM/diffusion_and_reverse/image_generation_exps/stylegan2_generated_celeba_64_imgs/images 
 
-    python main.py --generated_dir /home/zylyu/new_pool/ddpms/pytorch_diffusion_cifar10/pytorch_diffusion/results/ema_cifar10  --data_size all --dataset cifar10 --cache
+    python main.py  --data_size all --dataset cifar10 --cache --generated_dir /home/zylyu/new_pool/ddpms/pytorch_diffusion_cifar10/pytorch_diffusion/cifar10_generated_imgs/stylegan2_ada_uncond_generated_cifar10/diffusion_and_reverse_images_from_t_5 --device 0
+
+    python main.py  --data_size all --dataset cifar10 --cache --generated_dir /home/zylyu/new_pool/ddpms/pytorch_diffusion_cifar10/pytorch_diffusion/cifar10_generated_imgs/stylegan2_generated_cifar10/cifar10_stylegan2_generated_imgs/diffusion_and_reverse_images_from_t_100 --device 0
     '''
     main()   
