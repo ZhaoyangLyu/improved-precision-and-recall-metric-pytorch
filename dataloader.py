@@ -18,7 +18,7 @@ import pdb
 
 # https://pytorch.org/tutorials/advanced/neural_style_tutorial.html
 
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(torch.cuda.device_count(), "GPUS!")
 
 class feature_extractor(object):
