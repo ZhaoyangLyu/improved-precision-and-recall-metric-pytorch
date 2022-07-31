@@ -18,8 +18,8 @@ import pdb
 
 # https://pytorch.org/tutorials/advanced/neural_style_tutorial.html
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-print(torch.cuda.device_count(), "GPUS!")
+# device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+# print(torch.cuda.device_count(), "GPUS!")
 
 class feature_extractor(object):
     def __init__(self, args):
@@ -43,7 +43,8 @@ class feature_extractor(object):
         # 아래 말고 다음과 같이 뽑아 낼 수 도 있음. content_targets = [A.detach() for A in vgg(content_image, content_layers)] 
         # 다음 URL 참조. https://github.com/leongatys/PytorchNeuralStyleTransfer
         cnn.classifier = nn.Sequential(*[cnn.classifier[i] for i in range(5)])
-        cnn = cnn.to(device).eval()
+        cnn.cuda()
+        cnn.eval()
         # summary(cnn, (3, 224, 224))
 
         generated_features = []
@@ -57,7 +58,7 @@ class feature_extractor(object):
 
             print('extracting features for generated images')
             for imgs, img_paths in tqdm(generated_loader, ncols=80):
-                target_features = cnn(imgs)
+                target_features = cnn(imgs.cuda())
 
                 img_paths = list(img_paths)
                 generated_img_paths.extend(img_paths)
@@ -84,7 +85,7 @@ class feature_extractor(object):
 
                 print('extracting features for real images')
                 for imgs, _ in tqdm(real_loader, ncols=80):
-                    target_features = cnn(imgs)
+                    target_features = cnn(imgs.cuda())
                     real_features.append(target_features.detach().cpu().numpy())
 
                 real_features = np.ascontiguousarray(np.concatenate(real_features, axis=0))
@@ -152,7 +153,8 @@ class ImageDataset(Dataset):
         img_path = self.img_paths[idx]
         image = Image.open(img_path)
         image = self.transformations(image)
-        return image.to(device, torch.float), img_path
+        return image, img_path
+        # return image.to(device, torch.float), img_path
 
     def __len__(self):
         return len(self.img_paths)
